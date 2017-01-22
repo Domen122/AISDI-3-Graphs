@@ -48,7 +48,6 @@ bool Graph::operator==(Graph &other) const
     if(verticeCount!=other.verticeCount)return false;
     for(int i=0;i<verticeCount;++i)
     {
-        //if(verticeVector[i]!=other.verticeVector[i])return false;
         if(!(verticeVector[i]->areTableEq(*other.verticeVector[i])))return false;
     }
     return true;
@@ -64,7 +63,11 @@ int Graph::findVertice(int numb)
 
 bool Graph::isIsomorph(Graph &other)
 {
-    if(verticeCount!=other.verticeCount)return false;
+    if(verticeCount!=other.verticeCount)
+    {
+        std::cout<<"Nieizomorficzne"<<std::endl;
+        return false;
+    }
     if((*this)==other)
     {
         std::cout<<"Izomorficzne"<<std::endl;
@@ -83,6 +86,7 @@ bool Graph::isIsomorph(Graph &other)
             return true;
         }
     }
+    std::cout<<"Nieizomorficzne"<<std::endl;
     return false;
 }
 
