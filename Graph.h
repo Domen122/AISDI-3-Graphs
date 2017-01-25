@@ -32,6 +32,20 @@ class Graph
     Graph():verticeCount(0)
     {}
     Graph(std::string fileGraph);
+    Graph(Graph &other):Graph()
+    {
+        verticeCount=other.verticeCount;
+        verticeVector=other.verticeVector;
+    }
+    Graph(Graph &&other):Graph()
+    {
+        std::swap(verticeCount,other.verticeCount);
+        std::swap(verticeVector,other.verticeVector);
+    }
+    ~Graph()
+    {
+        delete &verticeVector;
+    }
     bool operator==(Graph &other) const;
     int findVertice(int number);
     bool isIsomorph(Graph &other);
