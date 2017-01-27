@@ -1,6 +1,7 @@
 #include "Graph.h"
 #include <algorithm>
 #include <utility>
+
 using namespace aisdi;
 
 int& Vertice::operator[](int numb)
@@ -61,33 +62,40 @@ int Graph::findVertice(int numb)
     }
 }
 
-bool Graph::isIsomorph(Graph &other)
+std::pair<bool, int*> Graph::isIsomorph(Graph &other)
 {
+    std::pair<bool, int*> par;
     if(verticeCount!=other.verticeCount)
     {
-        std::cout<<"Nieizomorficzne"<<std::endl;
-        return false;
-    }
-    if((*this)==other)
-    {
-        std::cout<<"Izomorficzne"<<std::endl;
-        for(int i=0;i<verticeCount;++i)std::cout<<i<<" --> "<<i<<std::endl;
-        return true;
+        par.first=false;
+        par.second=nullptr;
+        return par;
     }
     int *next_perm= new int[verticeCount];
     for(int i=0;i<verticeCount;++i)next_perm[i]=i;
+
+    if((*this)==other)
+    {
+
+        par.first=true;
+        par.second=next_perm;
+        return par;
+    }
     while(std::next_permutation(next_perm,next_perm+verticeCount))
     {
         Permute(next_perm);
         if((*this)==(other))
         {
-            std::cout<<"Izomorficzne"<<std::endl;
-            for(int i=0;i<verticeCount;++i)std::cout<<i<<" --> "<<next_perm[i]<<std::endl;
-            return true;
+
+            par.first=true;
+            par.second=next_perm;
+            return par;
         }
     }
-    std::cout<<"Nieizomorficzne"<<std::endl;
-    return false;
+
+    par.first=false;
+    par.second=next_perm;
+    return par;
 }
 
 void Graph::Permute(int *permuteTable)

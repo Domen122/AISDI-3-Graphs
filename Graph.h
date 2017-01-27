@@ -30,7 +30,10 @@ class Graph
     int verticeCount;
     std::vector<Vertice*> verticeVector;
     Graph():verticeCount(0)
-    {}
+    {
+    }
+
+
     Graph(std::string fileGraph);
     Graph(Graph &other):Graph()
     {
@@ -44,12 +47,16 @@ class Graph
     }
     ~Graph()
     {
-        delete &verticeVector;
+        for(int i=0;i<verticeCount;++i)
+        {
+            delete verticeVector[i];
+        }
     }
     bool operator==(Graph &other) const;
     int findVertice(int number);
-    bool isIsomorph(Graph &other);
+    std::pair<bool, int*> isIsomorph(Graph &other);
     void Permute(int *permuteTable);
 };
+
 }
 #endif

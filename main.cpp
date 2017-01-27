@@ -3,12 +3,45 @@
 
 using namespace aisdi;
 
-int main(int argc, char * argv[] )
+Graph graphFromFile(std::string fileGraph)
 {
-    std::cout<<argv[1]<<std::endl;
-    Graph A(argv[1]);
-    std::cout<<argv[2]<<std::endl;
-    Graph B(argv[2]);
-    void(A.isIsomorph(B));
+    std::fstream file;
+    Graph B;
+    file.open(fileGraph, std::ios::in);
+    if(file.good())
+    {
+    file >> B.verticeCount;
+    for(int i=0;i<B.verticeCount;++i)
+    {
+        Vertice *A=new Vertice(B.verticeCount, i);
+        B.verticeVector.push_back(A);
+    }
+    while(file.good())
+    {
+        int vertA, vertB;
+        file >> vertA >> vertB;
+        B.verticeVector[vertA]->operator[](vertB)=1;
+        B.verticeVector[vertB]->operator[](vertA)=1;
+    }
+    }
+    file.close();
+    return B;
+}
+
+void checkEQ(Graph A, Graph B)
+{
+    std::pair<bool, int*> CheckIs=A.isIsomorph(B);
+    if(CheckIs.first==true)
+    {
+        std::cout<<"Izomorficzne"<<std::endl;
+        for(int i=0;i<A.verticeCount;++i)std::cout<<i<<" --> "<<CheckIs.second[i]<<std::endl;
+    }
+    else std::cout<<"Nieizomorficzne"<<std::endl;
+}
+int main(int argc, char *argv[] )
+{
+    Graph A(graphFromFile(argv[1]));
+    Graph B(graphFromFile(argv[2]));
+    checkEQ(A,B);
     return 0;
 }
